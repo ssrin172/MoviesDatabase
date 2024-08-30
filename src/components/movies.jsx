@@ -7,6 +7,7 @@ import { paginate } from "../utils/paginate";
 import ListGroup from "./common/listGroup";
 import MoviesTable from "./moviesTable";
 import _ from "lodash";
+import Navbar from "./common/navbar";
 
 class Movies extends Component {
   state = {
@@ -88,6 +89,7 @@ class Movies extends Component {
     const movies = paginate(sortedMovies, currentPage, pageSize);
     return (
       <React.Fragment>
+        <Navbar />
         <div className="row">
           <div className="col-3">
             <ListGroup
