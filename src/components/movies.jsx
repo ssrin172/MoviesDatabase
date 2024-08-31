@@ -89,7 +89,6 @@ class Movies extends Component {
     const movies = paginate(sortedMovies, currentPage, pageSize);
     return (
       <React.Fragment>
-        <Navbar />
         <div className="row">
           <div className="col-3">
             <ListGroup
