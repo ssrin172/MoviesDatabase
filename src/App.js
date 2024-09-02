@@ -7,6 +7,7 @@ import MovieForm from "./components/MovieForm";
 import { Navigate, Route, Routes } from "react-router-dom";
 import Navbar from "./components/common/navbar";
 import LoginForm from "./components/loginForm";
+import RegisterForm from "./components/registerForm";
 import "./App.css";
 
 class App extends Component {
@@ -22,6 +23,7 @@ class App extends Component {
             <Route path="/rentals" element={<Rentals />}></Route>
             <Route path="/not-found" element={<Notfound />}></Route>
             <Route path="/login" element={<LoginForm />}></Route>
+            <Route path="/register" element={<RegisterForm />}></Route>
             <Route path="/" element={<Navigate to="/movies" />} />
             <Route path="*" element={<Navigate to="/not-found" />} />
           </Routes>
