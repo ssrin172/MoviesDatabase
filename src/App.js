@@ -18,6 +18,7 @@ class App extends Component {
         <main className="container">
           <Routes>
             <Route path="/movies/:id" element={<MovieForm />}></Route>
+            {/* <Route path="/movies/new" element={<MovieForm />}></Route> */}
             <Route path="/movies" exact element={<Movies />}></Route>
             <Route path="/customers" element={<Customers />}></Route>
             <Route path="/rentals" element={<Rentals />}></Route>
