@@ -1,15 +1,13 @@
 import React, { Component } from "react";
 import { getMovies } from "../services/fakeMovieService";
 import { getGenres } from "../services/fakeGenreService";
-import Like from "./common/like";
 import Pagination from "./common/pagination";
 import { paginate } from "../utils/paginate";
 import ListGroup from "./common/listGroup";
 import MoviesTable from "./moviesTable";
 import _ from "lodash";
-import Navbar from "./common/navbar";
-import { Button } from "bootstrap";
 import { Link } from "react-router-dom";
+import SearchBox from "./common/searchBox";
 
 class Movies extends Component {
   state = {
@@ -17,6 +15,8 @@ class Movies extends Component {
     genres: [],
     pageSize: 5,
     currentPage: 1,
+    searchQuery: "",
+    selectedGenre: null,
     sortColumn: { path: "title", order: "asc" },
   };
 
@@ -50,11 +50,15 @@ class Movies extends Component {
   };
 
   handleGenreChange = (genre) => {
-    this.setState({ selectedGenre: genre, currentPage: 1 });
+    this.setState({ selectedGenre: genre, searchQuery: "", currentPage: 1 });
   };
 
   handleSort = (sortColumn) => {
     this.setState({ sortColumn });
+  };
+
+  handleSearch = (query) => {
+    this.setState({ searchQuery: query, selectedGenre: null, currentPage: 1 });
   };
 
   //returns the list of sorted movies and the total number of filtered movies
@@ -65,12 +69,19 @@ class Movies extends Component {
       movies: allMovies,
       selectedGenre,
       sortColumn,
+      searchQuery,
     } = this.state;
 
-    const filteredMovies =
-      selectedGenre && selectedGenre._id
-        ? allMovies.filter((movie) => movie.genre._id === selectedGenre._id)
-        : allMovies;
+    let filteredMovies = allMovies;
+    if (searchQuery) {
+      filteredMovies = allMovies.filter((movie) =>
+        movie.title.toLowerCase().startsWith(searchQuery.toLowerCase())
+      );
+    } else if (selectedGenre && selectedGenre._id) {
+      filteredMovies = allMovies.filter(
+        (movie) => movie.genre._id === selectedGenre._id
+      );
+    }
 
     const sortedMovies = _.orderBy(
       filteredMovies,
@@ -108,6 +119,10 @@ class Movies extends Component {
               New Movie
             </Link>
             <p>Showing {totalCount} movies in the database</p>
+            <SearchBox
+              value={this.state.searchQuery}
+              onChange={this.handleSearch}
+            />
             <MoviesTable
               movies={movies}
               sortColumn={sortColumn}
