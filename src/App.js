@@ -8,12 +8,15 @@ import { Navigate, Route, Routes } from "react-router-dom";
 import Navbar from "./components/common/navbar";
 import LoginForm from "./components/loginForm";
 import RegisterForm from "./components/registerForm";
+import { ToastContainer } from "react-toastify";
 import "./App.css";
+import "react-toastify/dist/ReactToastify.css";
 
 class App extends Component {
   render() {
     return (
       <React.Fragment>
+        <ToastContainer />
         <Navbar />
         <main className="container">
           <Routes>

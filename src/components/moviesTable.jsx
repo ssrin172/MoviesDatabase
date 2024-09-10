@@ -25,7 +25,7 @@ class MoviesTable extends Component {
       key: "Delete",
       content: (movie) => (
         <button
-          onClick={() => this.props.onDelete(movie._id)} //we need an arrow function as we are passing arguments
+          onClick={() => this.props.onDelete(movie)} //we need an arrow function as we are passing arguments
           className="btn btn-danger btn-sm"
         >
           Delete
