@@ -11,7 +11,7 @@ export const customerSchema = new mongoose.Schema({
   },
   phone: {
     type: Number,
-    required: false,
+    required: true,
   },
 });
 export const Customer = mongoose.model("Customers", customerSchema);
