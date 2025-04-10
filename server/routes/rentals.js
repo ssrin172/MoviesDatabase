@@ -3,6 +3,7 @@ import { Movie } from "../models/movie.js";
 import { Customer } from "../models/customer.js";
 import express from "express";
 export const router = express.Router();
+import mongoose from "mongoose";
 
 router.get("/", async (req, res) => {
   const rentals = await Rental.find().sort("-dateOut"); //sort in descending order of date
@@ -10,6 +11,11 @@ router.get("/", async (req, res) => {
 });
 
 router.post("/", async (req, res) => {
+  if (!mongoose.isValidObjectId(req.body.customerId))
+    return res.status(400).send("Invalid customer ID format.");
+
+  if (!mongoose.isValidObjectId(req.body.movieId))
+    return res.status(400).send("Invalid movie ID format.");
   const customer = await Customer.findById(req.body.customerId);
   if (!customer) return res.status(400).send("Invalid customer.");
 
@@ -31,12 +37,27 @@ router.post("/", async (req, res) => {
       dailyRentalRate: movie.dailyRentalRate,
     },
   });
-  rental = await rental.save();
+  // rental = await rental.save();
 
-  movie.numberInStock--;
-  movie.save();
+  // movie.numberInStock--;
+  // movie.save();
+  const session = await mongoose.startSession();
+  session.startTransaction();
+  try {
+    await rental.save({ session });
 
-  res.send(rental);
+    movie.numberInStock--;
+    await movie.save({ session });
+
+    await session.commitTransaction();
+    session.endSession();
+
+    res.send(rental);
+  } catch (err) {
+    await session.abortTransaction();
+    session.endSession();
+    res.status(500).send("Transaction failed: " + err.message);
+  }
 });
 
 router.get("/:id", async (req, res) => {
