@@ -8,6 +8,7 @@ import cors from "cors";
 
 const app = express();
 
+app.use(cors());
 app.use(express.json());
 const port = process.env.port || 3900;
 
@@ -20,13 +21,6 @@ app.use("/api/genres", genres);
 app.use("/api/customers", customers);
 app.use("/api/movies", movies);
 app.use("/api/rentals", rentals);
-
-app.use(
-  cors({
-    origin: "http://localhost:3000", // The URL of your frontend React app
-    methods: ["GET", "POST", "PUT", "DELETE"],
-  })
-);
 
 app.listen(port, () => {
   console.log(`Listening on port ${port}`);
