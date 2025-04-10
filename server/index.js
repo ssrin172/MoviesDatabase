@@ -3,6 +3,7 @@ import { router as genres } from "./routes/genres.js";
 import { router as customers } from "./routes/customers.js";
 import { router as movies } from "./routes/movies.js";
 import { router as rentals } from "./routes/rentals.js";
+import { router as users } from "./routes/users.js";
 import mongoose from "mongoose";
 import cors from "cors";
 
@@ -21,6 +22,7 @@ app.use("/api/genres", genres);
 app.use("/api/customers", customers);
 app.use("/api/movies", movies);
 app.use("/api/rentals", rentals);
+app.use("/api/users", users);
 
 app.listen(port, () => {
   console.log(`Listening on port ${port}`);
