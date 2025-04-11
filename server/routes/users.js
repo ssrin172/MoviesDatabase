@@ -2,6 +2,8 @@ import express from "express";
 export const router = express.Router();
 import _ from "lodash";
 
+import bcrypt from "bcrypt";
+
 import { User } from "../models/user.js";
 
 router.get("/", async (req, res) => {
@@ -20,6 +22,8 @@ router.post("/", async (req, res) => {
   //     password: req.body.password,
   //   });
   newUser = new User(_.pick(req.body, ["name", "email", "password"]));
+  const salt = await bcrypt.genSalt(10);
+  newUser.password = await bcrypt.hash(newUser.password, salt);
 
   try {
     const result = await newUser.save();
