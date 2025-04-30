@@ -20,7 +20,7 @@ router.get("/:id", async (req, res) => {
 
 //add a movie
 router.post("/", async (req, res) => {
-  const genre = await Genre.findOne({ name: req.body.genre });
+  const genre = await Genre.findById(req.body.genreId);
   if (!genre) return res.status(400).send("Invalid genre.");
 
   let newMovie = new Movie({
