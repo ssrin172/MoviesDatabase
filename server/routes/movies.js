@@ -41,9 +41,16 @@ router.put("/:id", async (req, res) => {
   let movie = await Movie.findById(req.params.id);
   if (!movie) return res.status(404).send("Movie not found");
 
+  const genre = await Genre.findById(req.body.genreId);
+  if (!genre) return res.status(400).send("Invalid genre.");
+
   movie.title = req.body.title;
   movie.dailyRentalRate = req.body.dailyRentalRate || movie.dailyRentalRate;
   movie.numberInStock = req.body.numberInStock || movie.numberInStock;
+  movie.genre = {
+    _id: genre._id,
+    name: genre.name,
+  };
 
   const updatedMovie = await movie.save();
   res.send(updatedMovie);
