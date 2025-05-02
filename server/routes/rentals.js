@@ -39,25 +39,31 @@ router.post("/", async (req, res) => {
   });
   // rental = await rental.save();
 
-  // movie.numberInStock--;
-  // movie.save();
-  const session = await mongoose.startSession();
-  session.startTransaction();
   try {
-    await rental.save({ session });
-
     movie.numberInStock--;
-    await movie.save({ session });
-
-    await session.commitTransaction();
-    session.endSession();
-
-    res.send(rental);
+    await movie.save();
+    rental = await rental.save();
+    res.status(200).send();
   } catch (err) {
-    await session.abortTransaction();
-    session.endSession();
-    res.status(500).send("Transaction failed: " + err.message);
+    res.status(500).send("Unable to add rental");
   }
+  // const session = await mongoose.startSession();
+  // session.startTransaction();
+  // try {
+  //   await rental.save({ session });
+
+  //   movie.numberInStock--;
+  //   await movie.save({ session });
+
+  //   await session.commitTransaction();
+  //   session.endSession();
+
+  //   res.send(rental);
+  // } catch (err) {
+  //   await session.abortTransaction();
+  //   session.endSession();
+  //   res.status(500).send("Transaction failed: " + err.message);
+  // }
 });
 
 router.get("/:id", async (req, res) => {
